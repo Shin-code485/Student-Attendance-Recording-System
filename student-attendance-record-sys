@@ -1,0 +1,70 @@
+attendance = []
+
+while True:
+    print("\n>>> Student Attendance Recording System <<<")
+    print("1. Teacher\n2. Adviser/Coordinator\n3. Exit")
+    role = input("> ")
+
+    if role == "1":
+        while True:  
+            print("\n(Teacher Mode)\n1. Mark Present/Absent (P/A)\n2. Review attendance per day\n3. Back to main menu")
+            c = input("> ")
+
+            if c == "1":
+                date = input("Enter date (YYYY-MM-DD): ")
+                for r in range(int(input("How many students? "))):
+                    n = input("Name of the student: ")
+                    s = input("P = Present, A = Absent: ").upper()
+                    attendance.append([n, date, s])
+                print("Attendance recorded!\n")
+
+            elif c == "2":
+                d = input("Enter date (YYYY-MM-DD): ")
+                f = [r for r in attendance if r[1] == d]
+                if f: 
+                    print(f"\nAttendance on {d}")
+                    for r in f: 
+                        print(f"{r[0]}: {'Present' if r[2]=='P' else 'Absent'}")
+                else: 
+                    print("No records please try again.\n")
+
+            elif c == "3":
+                break  
+
+            else:
+                print("Invalid selection, try again.\n")
+
+    elif role == "2":
+        while True:  
+            print("\n(Adviser/Coordinator Mode)\n1. Monthly Report\n2. Student Summary\n3. Back to main menu")
+            c = input("> ")
+
+            if c == "1":
+                m = input("Enter Month (YYYY-MM): ")
+                found = False
+                for n in {r[0] for r in attendance}:
+                    p = sum(r[2]=="P" for r in attendance if r[0]==n and r[1][:7]==m)
+                    a = sum(r[2]=="A" for r in attendance if r[0]==n and r[1][:7]==m)
+                    if p+a: 
+                        print(f"{n}: Present = {p}, Absent = {a}")
+                        found = True
+                if not found: 
+                    print("No data.\n")
+
+            elif c == "2":
+                n = input("Student name: ")
+                p = sum(r[2]=="P" for r in attendance if r[0]==n)
+                a = sum(r[2]=="A" for r in attendance if r[0]==n)
+                print(f"{n}: Present = {p}, Absent = {a}\n" if p+a else "No record.\n")
+
+            elif c == "3":
+                break  
+
+            else:
+                print("Invalid selection, try again.\n")
+
+    elif role == "3":
+        print("Exiting the system!!!")
+        break
+    else:
+        print("Invalid selection please try again!\n")
